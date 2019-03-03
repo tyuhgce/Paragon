@@ -10,10 +10,11 @@ def get_file_bytes(request):
     key = next(iter(request.files))
     if len(request.files) > 0 and key is not None:
         return request.files[key][0][1]
+    raise ValueError('error', "can't parse the file from request")
 
 
 app = Sanic('app')
-app.static('/index.html', './index.html')
+app.static('/', './index.html')
 paragon = ParagonCore()
 
 
@@ -24,20 +25,26 @@ async def test(request):
 
 @app.route('/image', methods=['OPTIONS', 'GET', 'POST'])
 async def image(request):
-    r = paragon.prepare_image(
-        ImageData(
-            get_file_bytes(request),
-            int(request.form['naturalWidth'][0]),
-            int(request.form['naturalHeight'][0])
-        ))
-    return json(
-        {
-            'code ': 200,
-            'light ': r[0],
-            'dark ': r[1],
-            'decision ': r[2],
-        }
-    )
+    try:
+        r = paragon.prepare_image(
+            ImageData(
+                get_file_bytes(request),
+                int(request.form['naturalWidth'][0]),
+                int(request.form['naturalHeight'][0])
+            ))
+        return json(
+            {
+                'code ': 200,
+                'light ': r[0],
+                'dark ': r[1],
+                'decision ': r[2],
+            }
+        )
+    except Exception as error:
+        logger.error('image method fell with exception: %s' % error)
+        return json({
+            'error': 'something went wrong, please try again later!'
+        })
 
 
 if __name__ == "__main__":

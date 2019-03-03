@@ -14,7 +14,7 @@ class ImageParser:
 
 class PILImageParser(ImageParser):
     def build_image_dto(self, data):
-        im = Image.frombytes('RGB', (128, 128), data, 'raw')
+        im = Image.frombytes('RGB', (data.width, data.height), data.data, 'raw')
 
         pix = im.load()
         width, height = im.size

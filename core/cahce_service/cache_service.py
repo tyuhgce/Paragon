@@ -21,7 +21,7 @@ class FileCacheService(AbstractCacheWService):
     map = {}
 
     def is_present(self, obj):
-        return obj in self.map[obj]
+        return obj in self.map
 
     def put(self, obj, pr):
         self.map[obj] = pr

@@ -1,16 +1,16 @@
 from core.cahce_service.cache_service import FileCacheService
-from core.image_service.image_parser import ImageParser
-from core.image_service.image_processor import ImageProcessor
+from core.image_service.image_parser import PILImageParser
+from core.image_service.image_processor import SimpleImageProcessor
 
 
 class ParagonCore:
     @staticmethod
     def get_image_parser():
-        return ImageParser()
+        return PILImageParser()
 
     @staticmethod
     def get_image_processor():
-        return ImageProcessor()
+        return SimpleImageProcessor()
 
     @staticmethod
     def get_cache_service():

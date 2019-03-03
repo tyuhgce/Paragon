@@ -29,8 +29,8 @@
                 reader.onload = function (e) {
                     $('#blah')
                         .attr('src', e.target.result)
-                        .width(150)
-                        .height(200);
+                    //.width(150)
+                    //.height(200);
                 };
 
                 reader.readAsDataURL(input.files[0]);
@@ -40,9 +40,22 @@
         function uploadFile() {
             $('#upload-container button').prop('disabled', true);
 
+            const img = $('#blah').get(0);
+            if (isImageOk(img)) {
+                makeRequest(img.naturalWidth, img.naturalHeight);
+            } else {
+                img.onload = function () {
+                    makeRequest(img.naturalWidth, img.naturalHeight);
+                }
+            }
+        }
+
+        function makeRequest(naturalWidth, naturalHeight) {
             const blobFile = $('#file_chooser')[0].files[0];
             const formData = new FormData();
             formData.append("fileToUpload", blobFile);
+            formData.append("naturalWidth", naturalWidth);
+            formData.append("naturalHeight", naturalHeight);
 
             $.ajax({
                 url: "http://localhost:8000/image",
@@ -52,7 +65,7 @@
                 contentType: false,
                 success: function (response) {
                     const clz = '.alert.alert-success';
-                    $(clz).text(response);
+                    $(clz).text(JSON.stringify(response));
                     show(clz);
                     $('#upload-container button').prop('disabled', false);
                 },
@@ -65,6 +78,16 @@
                     $('#upload-container button').prop('disabled', false);
                 }
             });
+        }
+
+        function isImageOk(img) {
+            if (!img.complete) {
+                return false;
+            }
+            if (img.naturalWidth === 0) {
+                return false;
+            }
+            return true;
         }
     </script>
 

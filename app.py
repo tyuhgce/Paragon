@@ -1,5 +1,6 @@
 from sanic import Sanic
 from sanic.response import json
+from sanic.log import logger
 
 from core.image_service.dto.ImageData import ImageData
 from core.paragon_facade import ParagonCore

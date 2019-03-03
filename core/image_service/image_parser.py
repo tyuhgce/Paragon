@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from PIL import Image
+import io
 
 from core.image_service.dto.ImageDTO import ImageDTO
 
@@ -14,7 +15,8 @@ class ImageParser:
 
 class PILImageParser(ImageParser):
     def build_image_dto(self, data):
-        im = Image.frombytes('RGB', (data.width, data.height), data.data, 'raw')
+        image_stream = io.BytesIO(data.data)
+        im = Image.open(image_stream)
 
         pix = im.load()
         width, height = im.size

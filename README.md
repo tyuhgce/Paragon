@@ -20,7 +20,7 @@ The minimum requirement by Paragon is that your system supports python 3+.
 QUICK START
 -----------
 
-For quick look you can look at index.html page by address http://localhost:8000/. 
+For quick look you can check at index.html page by address http://localhost:8000/. <br />
 Also you can run tests in Test directory.
 
 FUNCTIONALITY
